@@ -2,22 +2,32 @@
 
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace Common.ForwardMessage
 {
     public class ForwardRequestInfo
     {
-        public ForwardRequestInfo(PathString url, string method, Dictionary<string, string> headers, JObject body)
+        public ForwardRequestInfo(string scheme, QueryString queryString, PathString pathString, string method, HostString hostString, Dictionary<string, string> httpRequestHeader, JObject body)
         {
-            this.url = url;
+            this.scheme = scheme;
+            this.queryString = queryString;
+            this.pathString = pathString;
             this.method = method;
-            this.headers = headers;
+            this.hostString = hostString;
+            this.httpRequestHeader = httpRequestHeader;
             this.body = body;
         }
 
-        public PathString url { get; set; }
+        public string scheme { get; set; }
+        public QueryString queryString { get; set; }
+        public PathString pathString { get; set; }
         public string method { get; set; }
-        public Dictionary<string, string> headers { get; set; }
-        public JObject body { get; set; }
+        public HostString hostString{ get; set; }
+        public Dictionary<string, string> httpRequestHeader { get; set; }
+        public JObject? body { get; set; }
+        public string? userId { get; set; }
+
+
     }
 }

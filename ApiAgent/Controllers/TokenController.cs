@@ -5,6 +5,7 @@ using Common.Requests.Token;
 using Common.ForwardMessage;
 using RabbitHelper.Configuration;
 using RabbitHelper.IServices;
+using Microsoft.Extensions.Logging;
 
 
 namespace ApiAgent.Controllers
@@ -27,6 +28,7 @@ namespace ApiAgent.Controllers
         {
             //var ContentTypeValue = HttpContext.Request.Headers["Content-Type"];
             //return Ok(AuthorizationValue);
+            logger.LogInformation("receive");
 
             if (!await _producer.CreateModel(_producerConfiguration.ExchangeName,
                                             _producerConfiguration.ExchangeType,
@@ -38,22 +40,24 @@ namespace ApiAgent.Controllers
             {
                 return BadRequest();
             }
-            var httpContextRequest = HttpContext.Request;
 
-            var requestURL = httpContextRequest.Path;
-            var requestMethod = httpContextRequest.Method;
-            var requestHeaders = httpContextRequest.Headers.ToDictionary(h => h.Key, h => h.Value.ToString());
-            var requestBody = createTokenRequest;
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            foreach(var h in HttpContext.Request.Headers)
+            {
+                headers.Add(h.Key,h.Value);
+            }
 
-            var httpRequestInfo = new ForwardRequestInfo(requestURL,
-                                                                            requestMethod,
-                                                                            requestHeaders,
-                                                                            JObject.FromObject(requestBody));
-            var callBackPathInfo = new ForwardCallBackPath(_producerConfiguration.CallbackExchangeName, 
-                                                        _producerConfiguration.CallbackQueueName, 
+            var httpRequestInfo = new ForwardRequestInfo(HttpContext.Request.Scheme, 
+                                                            HttpContext.Request.QueryString, 
+                                                            HttpContext.Request.Path, 
+                                                            HttpContext.Request.Method, 
+                                                            HttpContext.Request.Host, 
+                                                            headers,
+                                                            JObject.FromObject(createTokenRequest));
+            var callBackPathInfo = new ForwardCallBackPath(_producerConfiguration.CallbackExchangeName,
+                                                        _producerConfiguration.CallbackQueueName,
                                                         _producerConfiguration.CallbackRoutingKey);
             var forwardMessage = new ForwardMessage(Guid.NewGuid().ToString(),
-                                                           "CreateTokenRequest",
                                                               httpRequestInfo,
                                                               callBackPathInfo);
             string serializedforwardMessage = JsonConvert.SerializeObject(forwardMessage);
@@ -66,6 +70,10 @@ namespace ApiAgent.Controllers
                 return Ok(send);
             }
             return BadRequest(send);
+
+
+
+            //return BadRequest();
         }
 
         //[MustHavePermissionAttribute(AppRoleGroup.BasicAccess,AppFeature.Users,AppAction.Update)]

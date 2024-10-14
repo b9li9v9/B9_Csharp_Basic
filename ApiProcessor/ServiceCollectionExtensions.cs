@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitHelper.Configuration;
 using RabbitHelper.IServices;
@@ -12,15 +13,17 @@ namespace ApiProcessor
             // 注册 RabbitMQ Sender
             services.AddLogging();
             services.AddSingleton<IConsumer, Consumer>();
+            services.AddTransient<IProducer, Producer>();
+
             return services;
         }
 
         internal static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            var consumerRabbitConfiguration = configuration.Bind<ConsumerConfiguration>();
-            services.AddSingleton(consumerRabbitConfiguration);
-            var producerRabbitConfiguration = configuration.Bind<ProducerConfiguration>();
-            services.AddSingleton(producerRabbitConfiguration);
+            var consumerConfiguration = configuration.Bind<ConsumerConfiguration>();
+            services.AddSingleton(consumerConfiguration);
+            var producerConfiguration = configuration.Bind<ProducerConfiguration>();
+            services.AddSingleton(producerConfiguration);
             return services;
         }
 

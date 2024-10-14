@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiAgent", "ApiAgent\ApiAge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiProcessor", "ApiProcessor\ApiProcessor.csproj", "{76E8CF2F-F9C3-4D8F-A7B2-FED766BE4954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitHelper", "RabbitHelper\RabbitHelper.csproj", "{AFD301AC-418A-4D1E-B7E5-79CC14E8E49C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitHelper", "RabbitHelper\RabbitHelper.csproj", "{AFD301AC-418A-4D1E-B7E5-79CC14E8E49C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

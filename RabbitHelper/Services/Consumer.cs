@@ -56,19 +56,20 @@ namespace RabbitHelper.Services
         }
 
         // 开始消费消息，接收消息处理方法和预取数量
-        public void StartConsuming(Action<string> messageHandler, ushort prefetchCount = 1)
+        public virtual async Task StartConsuming(Action<string> messageHandler, ushort prefetchCount = 1)
         {
             _channel.BasicQos(0, prefetchCount, false); // 设置预取数量
 
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (model, ea) =>
+            consumer.Received += async(model, ea) =>
             {
                 var body = ea.Body.ToArray(); // 获取消息体
                 var message = Encoding.UTF8.GetString(body); // 转换为字符串
                 try
                 {
                     _logger.LogInformation($"Received message: {message}"); // 记录接收到的消息
-                    messageHandler(message); // 处理消息
+                    //messageHandler(message); // 处理消息
+                    await Task.Run(() => messageHandler(message));
                     _channel.BasicAck(ea.DeliveryTag, false); // 手动确认消息处理
                 }
                 catch (Exception ex)

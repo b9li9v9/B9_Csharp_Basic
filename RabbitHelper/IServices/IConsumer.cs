@@ -8,7 +8,7 @@ namespace RabbitHelper.IServices
 {
     public interface IConsumer
     {
-        public void StartConsuming(Action<string> messageHandler, ushort prefetchCount = 1);
+        public Task StartConsuming(Action<string> messageHandler, ushort prefetchCount = 1);
         public void Dispose();
 
     }
