@@ -32,7 +32,8 @@ namespace ApiAgent.Controllers
 
             if (!await _producer.CreateModel(_producerConfiguration.ExchangeName,
                                             _producerConfiguration.ExchangeType,
-                                            true, _producerConfiguration.QueueName,
+                                            true, 
+                                            _producerConfiguration.QueueName,
                                             true,
                                             false,
                                             false,

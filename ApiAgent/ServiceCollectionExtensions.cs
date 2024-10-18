@@ -19,7 +19,7 @@ namespace ApiAgent
         {
 
             // 注册 RabbitMQ Sender
-            services.AddSingleton<IProducer, Producer>();
+            services.AddTransient<IProducer, Producer>();
             return services;
         }
 

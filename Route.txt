@@ -1,0 +1,45 @@
+httpClient -> agent/producer -> rabbit <--> consumer/producer -> services
+   ↑                             ↓
+    ------------------------------
+
+API是给外部的接口。
+SPI是给内部实现的接口。
+API（应用程序编程接口）
+SPI（服务提供者接口）
+
+1. 定义SPI接口
+public interface ICalculatorService
+{
+    int Add(int a, int b);
+}
+
+2. 实现SPI接口
+public class SimpleCalculatorService : ICalculatorService
+{
+    public int Add(int a, int b)
+    {
+        return a + b;
+    }
+}
+
+3. 定义API接口
+public interface ICalculatorAPI
+{
+    int AddNumbers(int a, int b);
+}
+
+4. 实现API接口并使用SPI
+public class CalculatorAPI : ICalculatorAPI
+{
+    private readonly ICalculatorService _calculatorService;
+
+    public CalculatorAPI(ICalculatorService calculatorService)
+    {
+        _calculatorService = calculatorService;
+    }
+
+    public int AddNumbers(int a, int b)
+    {
+        return _calculatorService.Add(a, b);
+    }
+}

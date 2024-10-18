@@ -19,6 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiProcessor", "ApiProcesso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitHelper", "RabbitHelper\RabbitHelper.csproj", "{AFD301AC-418A-4D1E-B7E5-79CC14E8E49C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{C1DB30C2-E418-49E6-B951-15C7640CC5B8}"
+	ProjectSection(SolutionItems) = preProject
+		Route.txt = Route.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

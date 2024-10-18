@@ -18,12 +18,13 @@ namespace ApiProcessor
             builder.Services.AddConfiguration(builder.Configuration);
             
             // 获取 RabbitMqConsumer 实例并开始消费
-            var consumerExtensions = builder.Services.BuildServiceProvider().GetService<IConsumer>();
+            var consumer = builder.Services.BuildServiceProvider().GetService<IConsumer>();
 
 
             int i = 0;
-            await consumerExtensions.StartConsuming(async message =>
+            await consumer.StartConsuming(async message =>
             {
+                
                 i++;
                 Console.WriteLine(i);
                 // 监听
@@ -55,17 +56,17 @@ namespace ApiProcessor
                 }
 
                 // 转发回RabbitHost  这里配置项，既有配置类又有回调地址  重叠了。
-                var producer = builder.Services.BuildServiceProvider().GetService<IProducer>();
-                var ProducerConfiguration = builder.Services.BuildServiceProvider().GetService<ProducerConfiguration>();
-                await producer.CreateModel(ProducerConfiguration.ExchangeName,
-                                       ProducerConfiguration.ExchangeType,
-                                       true,
-                                       deserializeMessage.httpRequestInfo.userId != null ? deserializeMessage.httpRequestInfo.userId : ProducerConfiguration.QueueName,
-                                       true,
-                                       false,
-                                       false,
-                                       deserializeMessage.httpRequestInfo.userId != null ? deserializeMessage.httpRequestInfo.userId : ProducerConfiguration.QueueName
-                                       );
+                //var producer = builder.Services.BuildServiceProvider().GetService<IProducer>();
+                //var ProducerConfiguration = builder.Services.BuildServiceProvider().GetService<ProducerConfiguration>();
+                //await producer.CreateModel(ProducerConfiguration.ExchangeName,
+                //                       ProducerConfiguration.ExchangeType,
+                //                       true,
+                //                       deserializeMessage.httpRequestInfo.userId != null ? deserializeMessage.httpRequestInfo.userId : ProducerConfiguration.QueueName,
+                //                       true,
+                //                       false,
+                //                       false,
+                //                       deserializeMessage.httpRequestInfo.userId != null ? deserializeMessage.httpRequestInfo.userId : ProducerConfiguration.QueueName
+                //                       );
 
 
 
@@ -74,7 +75,7 @@ namespace ApiProcessor
 
             Console.ReadKey();
             // 释放资源
-            consumerExtensions.Dispose();
+            consumer.Dispose();
         }
 
             

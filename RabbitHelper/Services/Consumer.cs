@@ -63,6 +63,7 @@ namespace RabbitHelper.Services
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += async(model, ea) =>
             {
+                
                 var body = ea.Body.ToArray(); // 获取消息体
                 var message = Encoding.UTF8.GetString(body); // 转换为字符串
                 try
